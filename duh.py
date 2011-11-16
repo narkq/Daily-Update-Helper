@@ -106,7 +106,7 @@ branch_start_finder = ensure_valid_regex(branch_start_regex)
 branch_stop_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_stop_regex')
 branch_stop_finder = ensure_valid_regex(branch_stop_regex)
 
-branches = ['lol\n']
+branches = []
 start_flag = False
 for line in lines:
 	if branch_stop_finder.search(line):
