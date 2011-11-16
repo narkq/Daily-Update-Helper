@@ -1,0 +1,20 @@
+[wiki]
+uri = https://conf.superjob.ru/rpc/xmlrpc
+space = DEV
+page = features-%%m-%%y
+login =
+password =
+
+[general]
+branch_name_regex = \*.*?(\w+\/[\w\d-]+).*?\*
+branch_start_regex = ^# \[[^\[\]|]+\|[^\[\]|]+\]
+branch_stop_regex = ^зафиксировано
+editor = "%windir%/notepad.exe"
+
+[git]
+base_branch = master
+tmp_branch_prefix = rebased/
+rebase_flags = -p --no-ff
+merge_flags = -q --no-ff
+checkout_flags = -q -f
+
