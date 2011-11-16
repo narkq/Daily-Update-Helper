@@ -9,7 +9,7 @@ password =
 branch_name_regex = \*.*?(\w+\/[\w\d-]+).*?\*
 branch_start_regex = ^# \[[^\[\]|]+\|[^\[\]|]+\]
 branch_stop_regex = ^зафиксировано
-editor = "%windir%/notepad.exe"
+editor = "%%windir%%/notepad.exe"
 
 [git]
 base_branch = master
