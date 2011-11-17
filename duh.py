@@ -109,6 +109,7 @@ if not page:
 lines = page['content'].splitlines(True)
 
 branch_name_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_name_regex')
+branch_name_regex_index = int(ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_name_regex_index'))
 branch_name_finder = ensure_valid_regex(branch_name_regex)
 branch_start_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_start_regex')
 branch_start_finder = ensure_valid_regex(branch_start_regex)
@@ -126,10 +127,9 @@ for line in lines:
 	if start_flag:
 		match = branch_name_finder.search(line)
 		if match:
-			branch_name = match.group(1)
+			branch_name = match.group(branch_name_regex_index)
 			if branch_name:
 				branches.append(branch_name + "\n")
-				#todo_fd.write(branch_name + "\n")
 
 if not len(branches):
 	print 'Nothing to do.'
