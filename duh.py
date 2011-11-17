@@ -147,7 +147,9 @@ if os.system(editor + ' ' + todo_real_path):
 todo_fd = open(todo_real_path, 'r')
 branches = []
 for line in todo_fd:
-	branches.append(line.rstrip())
+	clean_line = line.rstrip()
+	if clean_line:
+		branches.append(clean_line)
 todo_fd.close()
 os.unlink(todo_real_path)
 
