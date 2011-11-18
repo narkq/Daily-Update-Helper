@@ -158,12 +158,16 @@ if not len(branches):
 	exit()
 
 base_branch = ensure_cfg_param(cfg, cfg_real_path, 'git', 'base_branch');
+base_branch_upstream = ensure_cfg_param(cfg, cfg_real_path, 'git', 'base_branch_upstream');
 tmp_branch_prefix = ensure_cfg_param(cfg, cfg_real_path, 'git', 'tmp_branch_prefix');
 rebase_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'rebase_flags');
 merge_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'merge_flags');
 checkout_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'checkout_flags');
 
 os.system('git fetch --all')
+if os.system('git rebase ' + rebase_flags + ' ' + base_branch_upstream + ' ' + base_branch):
+	print 'Failed to autorebase your local commits in branch ' + base_branch + '. Please do it yourself.'
+	exit()
 
 results = {}
 

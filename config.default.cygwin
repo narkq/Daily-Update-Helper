@@ -14,6 +14,7 @@ editor = vim
 
 [git]
 base_branch = master
+base_branch_upstream = origin/master
 tmp_branch_prefix = rebased/
 rebase_flags = -p --no-ff
 merge_flags = -q --no-ff
