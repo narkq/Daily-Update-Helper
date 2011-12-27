@@ -110,7 +110,10 @@ lines = page['content'].splitlines(True)
 
 branch_name_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_name_regex')
 branch_name_regex_index = int(ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_name_regex_index'))
+remote_name_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'remote_name_regex')
+remote_name_regex_index = int(ensure_cfg_param(cfg, cfg_real_path, 'general', 'remote_name_regex_index'))
 branch_name_finder = ensure_valid_regex(branch_name_regex)
+remote_name_finder = ensure_valid_regex(remote_name_regex)
 branch_start_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_start_regex')
 branch_start_finder = ensure_valid_regex(branch_start_regex)
 branch_stop_regex = ensure_cfg_param(cfg, cfg_real_path, 'general', 'branch_stop_regex')
@@ -146,10 +149,14 @@ if os.system(editor + ' ' + todo_real_path):
 
 todo_fd = open(todo_real_path, 'r')
 branches = []
+remotes = dict([])
 for line in todo_fd:
 	clean_line = line.rstrip()
 	if clean_line:
 		branches.append(clean_line)
+		match = remote_name_finder.search(clean_line)
+		if match:
+			remotes[match.group(remote_name_regex_index)] = 1
 todo_fd.close()
 os.unlink(todo_real_path)
 
@@ -163,8 +170,18 @@ tmp_branch_prefix = ensure_cfg_param(cfg, cfg_real_path, 'git', 'tmp_branch_pref
 rebase_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'rebase_flags');
 merge_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'merge_flags');
 checkout_flags = ensure_cfg_param(cfg, cfg_real_path, 'git', 'checkout_flags');
+max_fetch_retries = int(ensure_cfg_param(cfg, cfg_real_path, 'git', 'max_fetch_retries'));
 
-os.system('git fetch --all')
+fetch_not_successful = True
+max_retries_not_exceeded = True
+retries = 0
+while fetch_not_successful and max_retries_not_exceeded:
+	fetch_not_successful = os.system('git fetch --multiple ' + ' '.join(remotes.iterkeys()))
+	max_retries_not_exceeded = retries <= max_fetch_retries
+	retries += 1
+if fetch_not_successful:
+	print 'Failed to fetch remote changes. Please check you settings, network, etc. and try again.'
+	exit()
 if os.system('git rebase ' + rebase_flags + ' ' + base_branch_upstream + ' ' + base_branch):
 	print 'Failed to autorebase your local commits in branch ' + base_branch + '. Please do it yourself.'
 	exit()

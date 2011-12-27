@@ -8,6 +8,8 @@ password =
 [general]
 branch_name_regex = \*.*?([a-zA-z0-9_-]+\/[a-zA-Z0-9_-]+).*?\*
 branch_name_regex_index = 1
+remote_name_regex = ([a-zA-z0-9_-]+)\/[a-zA-Z0-9_-]+
+remote_name_regex_index = 1
 branch_start_regex = ^# \[[^\[\]|]+\|[^\[\]|]+\]
 branch_stop_regex = ^зафиксировано
 editor = vim
@@ -19,4 +21,5 @@ tmp_branch_prefix = rebased/
 rebase_flags = -p --no-ff
 merge_flags = -q --no-ff
 checkout_flags = -q -f
+max_fetch_retries = 4
 
